@@ -1,8 +1,28 @@
 # delivery-service project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Helm Install
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+### Set env variables
+```
+export CLUSTER_APP_BASE=apps.cluster.example.com
+```
+
+### First-time Install
+```
+helm install delivery-service-v1 --set firstInstall=true --set baseOpenshiftAppHostname=$CLUSTER_APP_BASE .openshift/helm
+```
+
+### Deploying a New Version
+To deploy another version of an app, you must set version, versionName, and dockerTag. This will create a new workload for the app in which you can control with VirtualServices and DestinationRules. 
+
+The following example deploys version 2 of the delivery-service application.
+
+```
+helm install delivery-service-v2 --set version=2.0.0 --set versionName=v2 --set dockerTag=2.0.0 .openshift/helm
+```
+
+> __Note:__ Helm versioning was an issue as Service Mesh needed to only create a new deployment; All other resources should be the same! 
+
 
 ## Running the application in dev mode
 
