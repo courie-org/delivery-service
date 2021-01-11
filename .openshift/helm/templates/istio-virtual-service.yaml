@@ -1,0 +1,19 @@
+{{- if .Values.firstInstall -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: delivery-service-routing-config
+spec:
+  hosts:
+  - "delivery-api.{{ .Values.baseOpenshiftAppHostname }}"
+  gateways:
+  - delivery-service-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: delivery-service
+        subset: {{ .Values.versionName }}
+{{- end }}
